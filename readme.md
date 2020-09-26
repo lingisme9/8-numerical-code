@@ -364,7 +364,7 @@ int main()
 
 完整的节点的遍历顺序如下(节点上的的蓝色数字代表)：
 
-![92f602a1eaa301784085b8a3c4b948c0.png (381×337)](https://gitee.com/lingisme9/typora/raw/master/img/92f602a1eaa301784085b8a3c4b948c0.png)
+![image-20200926111859245](https://gitee.com/lingisme9/typora/raw/master/img/image-20200926111859245.png)
 
 看到以上的遍历不难发现这就是树的前序遍历,实际上不管是前序遍历，还是中序遍历，亦或是后序遍历，都属于深度优先遍历。
 
@@ -630,7 +630,9 @@ int main()
 }
 ```
 
+**运行结果：**
 
+![image-20200926112043570](https://gitee.com/lingisme9/typora/raw/master/img/image-20200926112043570.png)
 
 ### 启发式搜索实现8数码
 
@@ -654,7 +656,7 @@ int main()
 
 由上图所示可得，正确位置数码个数大于等于4的只有左下方的格局，那么下一步选择的就是左下方的格局，再次调用次算法如下图：
 
-![wXeg6P.png](https://gitee.com/lingisme9/typora/raw/master/img/wXeg6P.png)
+![image-20200926111802380](https://gitee.com/lingisme9/typora/raw/master/img/image-20200926111802380.png)
 
 
 
@@ -916,3 +918,7 @@ int main()
     return 0;
 }
 ```
+
+**运行结果**
+
+![image-20200926111956414](https://gitee.com/lingisme9/typora/raw/master/img/image-20200926111956414.png)
