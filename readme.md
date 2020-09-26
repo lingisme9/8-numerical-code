@@ -10,10 +10,10 @@
 
 题目读完第一感觉是和求解最短路径问题类似，考虑使用BFS，状态很好找，每次移动空格就会形成一种新的状态，例如：
 
-![img](https://gitee.com/lingisme9/typora/raw/master/img/20180116201941897)
+![image-20200926091502520](https://gitee.com/lingisme9/typora/raw/master/img/image-20200926091502520.png)
 
 
-![wXEZz6.png](https://s1.ax1x.com/2020/09/22/wXEZz6.png)
+![wXEZz6.png](https://gitee.com/lingisme9/typora/raw/master/img/wXEZz6.png)
 
 八数码问题是个典型的状态图搜索问题。
 
@@ -39,6 +39,8 @@
 
 ​	判重的实质就是建立状态数字串（一个int数据）和是否出现（一个bool数据）之间的联系，
 
+3.将状态转换成9位的一个数字数字唯一标识一个状态
+
 ## 搜索方法的选择
 
 ### BFS（广度优先搜索）
@@ -56,35 +58,6 @@
 动图如下：
 
 ![img](https://gitee.com/lingisme9/typora/raw/master/img/a2c7c61edcadffeed85c10f53f1c988c.gif)
-
-```
-/** 
- * 使用队列实现 bfs 
- * @param root 
- */ 
-private static void bfs(Node root) { 
-    if (root == null) { 
-        return; 
-    } 
-    Queue<Node> stack = new LinkedList<>(); 
-    stack.add(root); 
- 
-    while (!stack.isEmpty()) { 
-        Node node = stack.poll(); 
-        System.out.println("value = " + node.value); 
-        Node left = node.left; 
-        if (left != null) { 
-            stack.add(left); 
-        } 
-        Node right = node.right; 
-        if (right != null) { 
-            stack.add(right); 
-        } 
-    } 
-} 
-
-
-```
 
 ### **广度优先实现8数码**
 
@@ -109,6 +82,12 @@ struct node{
 
 - 找到空白棋子很简单，直接遍历就好，但是如何返回它的x和y坐标，试着能不能使用一个数字代替，后来发现确实可以。
 
+- **广度优先搜索图**
+
+  ![image-20200926093039024](https://gitee.com/lingisme9/typora/raw/master/img/image-20200926093039024.png)
+  
+  
+  
   
 
 ```
@@ -359,7 +338,7 @@ int main()
 
 ![image-20200925224431685](https://gitee.com/lingisme9/typora/raw/master/img/image-20200925224431685.png)
 
-**2.DFS（深度优先搜索）**
+### DFS（深度优先搜索）
 
 主要思路是从图中一个未访问的顶点 V 开始，沿着一条路一直走到底，然后从这条路尽头的节点回退到上一个节点，再从另一条路开始走到底...，不断递归重复此过程，直到所有的顶点都遍历完成，它的特点是不撞南墙不回头，先走完一条路，再换一条路继续走。
 
@@ -367,25 +346,25 @@ int main()
 
 
 
-![img](https://s4.51cto.com/oss/202004/16/ca375e4d1d4a377b4a15dc9e548123d1.png)
+![img](https://gitee.com/lingisme9/typora/raw/master/img/ca375e4d1d4a377b4a15dc9e548123d1.png)
 
 2、上图中一条路已经走到底了(9是叶子节点，再无可遍历的节点)，此时就从 9 回退到上一个节点 5，看下节点 5 是否还有除 9 以外的节点，没有继续回退到 2，2 也没有除 5 以外的节点，回退到 1，1 有除 2 以外的节点 3，所以从节点 3 开始进行深度优先遍历，如下：
 
 
 
-![img](https://s3.51cto.com/oss/202004/16/2354c3d3f9abc912f6500140ee92458a.png)
+![img](https://gitee.com/lingisme9/typora/raw/master/img/2354c3d3f9abc912f6500140ee92458a.png)
 
 3、同理从 10 开始往上回溯到 6, 6 没有除 10 以外的子节点，再往上回溯，发现 3 有除 6 以外的子点 7，所以此时会遍历 7。
 
 
 
-![img](https://s2.51cto.com/oss/202004/16/7e0a19b7de2356a352661c4b0f803f71.png)
+![img](https://gitee.com/lingisme9/typora/raw/master/img/7e0a19b7de2356a352661c4b0f803f71.png)
 
 3、从 7 往上回溯到 3， 1，发现 1 还有节点 4 未遍历，所以此时沿着 4， 8 进行遍历,这样就遍历完成了。
 
 完整的节点的遍历顺序如下(节点上的的蓝色数字代表)：
 
-![92f602a1eaa301784085b8a3c4b948c0.png (381×337)](https://s5.51cto.com/oss/202004/16/92f602a1eaa301784085b8a3c4b948c0.png)
+![92f602a1eaa301784085b8a3c4b948c0.png (381×337)](https://gitee.com/lingisme9/typora/raw/master/img/92f602a1eaa301784085b8a3c4b948c0.png)
 
 看到以上的遍历不难发现这就是树的前序遍历,实际上不管是前序遍历，还是中序遍历，亦或是后序遍历，都属于深度优先遍历。
 
@@ -393,44 +372,7 @@ int main()
 
 **1、递归实现**
 
-递归实现比较简单，由于是前序遍历，所以我们依次遍历当前节点，左节点，右节点即可，对于左右节点来说，依次遍历它们的左右节点即可，依此不断递归下去，直到叶节点(递归终止条件)，代码如下：
-
-```
-public class Solution { 
-    private static class Node { 
-        /** 
-         * 节点值 
-         */ 
-        public int value; 
-        /** 
-         * 左节点 
-         */ 
-        public Node left; 
-        /** 
-         * 右节点 
-         */ 
-        public Node right; 
- 
-        public Node(int value, Node left, Node right) { 
-            this.value = value; 
-            this.left = left; 
-            this.right = right; 
-        } 
-    } 
- 
-    public static void dfs(Node treeNode) { 
-        if (treeNode == null) { 
-            return; 
-        } 
-        // 遍历节点 
-        process(treeNode) 
-        // 遍历左节点 
-        dfs(treeNode.left); 
-        // 遍历右节点 
-        dfs(treeNode.right); 
-    } 
-} 
-```
+递归实现比较简单，由于是前序遍历，所以我们依次遍历当前节点，左节点，右节点即可，对于左右节点来说，依次遍历它们的左右节点即可，依此不断递归下去，直到叶节点(递归终止条件)
 
 递归的表达性很好，也很容易理解，不过如果层级过深，很容易导致栈溢出。所以我们重点看下非递归实现。
 
@@ -444,155 +386,253 @@ public class Solution {
 
 我们以以下二叉树为例来看下如何用栈来实现 DFS。
 
-![b2a7d9fdc8fa1898a569255957428d94.png (355×287)](https://s2.51cto.com/oss/202004/16/b2a7d9fdc8fa1898a569255957428d94.png)
+![b2a7d9fdc8fa1898a569255957428d94.png (355×287)](https://gitee.com/lingisme9/typora/raw/master/img/b2a7d9fdc8fa1898a569255957428d94.png)
 
 整体动图如下：
 
-![e1e6a44251b69cd3b930f3071a71ffd8](https://s1.51cto.com/oss/202004/16/e1e6a44251b69cd3b930f3071a71ffd8.gif)
+![7aa1e0a398d4b47db3773a802d990944](https://gitee.com/lingisme9/typora/raw/master/img/7aa1e0a398d4b47db3773a802d990944.gif)
 
-整体思路还是比较清晰的，使用栈来将要遍历的节点压栈，然后出栈后检查此节点是否还有未遍历的节点，有的话压栈，没有的话不断回溯(出栈)，有了思路，不难写出如下用栈实现的二叉树的深度优先遍历代码：
+整体思路还是比较清晰的，使用栈来将要遍历的节点压栈，然后出栈后检查此节点是否还有未遍历的节点，有的话压栈，没有的话不断回溯(出栈)
 
-```
-/** 
- * 使用栈来实现 dfs 
- * @param root 
- */ 
-public static void dfsWithStack(Node root) { 
-    if (root == null) { 
-        return; 
-    } 
- 
-    Stack<Node> stack = new Stack<>(); 
-    // 先把根节点压栈 
-    stack.push(root); 
-    while (!stack.isEmpty()) { 
-        Node treeNode = stack.pop(); 
-        // 遍历节点 
-        process(treeNode) 
- 
-        // 先压右节点 
-        if (treeNode.right != null) { 
-            stack.push(treeNode.right); 
-        } 
- 
-        // 再压左节点 
-        if (treeNode.left != null) { 
-            stack.push(treeNode.left); 
-        } 
-    } 
-} 
-```
+### 深度优先实现8数码
 
-**深度优先实现8数码**
+a) 把初始节点放入Open表中；
+b) 如果Open表为空，则问题无解，失败退出；
+c) 把Open表的第一个节点取出放入Close表，并标记该节点为n；
+d) 考察n节点是否为目标节点。如果是，则得到问题的解，成功退出；
+e) 如果节点n不可扩展，则转第b)步；
+f) 扩展节点n，将其子节点放入Open表的头部，并为每一个子节点设置指向父亲节点的指针，然后转第b)步。
+
+C++实现：
 
 ```
-#include<cstdio>
-#include<cstring>
-#include<ctime>
-char ans[11],start[10];
-bool isUsed[11];
-int changeId[9][4]={{-1,-1,3,1},{-1,0,4,2},{-1,1,5,-1},
-					{0,-1,6,4},{1,3,7,5},{2,4,8,-1},
-					{3,-1,-1,7},{4,6,-1,8},{5,7,-1,-1}
-					};//0出现在0->8的位置后该和哪些位置交换 
-const int M=400000;//9！=362800，因此数组开40W足够了 
-int num[M],len=0,des=123804765;//num存储所有排列，len表示排列的个数也就是9！，des为目的状态直接用整数表示便于比较 
-int isV[M][2];//bfs时判断状态是否出现过；isV的下标和num的下标一一对应，表示某种排列是否出现过
-//通过isV和num建立起某种排列的组合成的整数int和bool的关系，其实STL中有map实现了key-->value，用排列作为key，value用bool即可 
-int que1[M/2][3],que2[M/2][3];//0-->排列,1-->排列中0的位置,2-->步数 
-void swap(char *c,int a,int b){//交换字符串中的两个位置 
-	char t=c[a];
-	c[a]=c[b];
-	c[b]=t;
-}
-void paiLie(int n,int k){//深搜产生0-8的全排列 
-	for(int i=0;i<n;i++){
-		if(!isUsed[i]){
-			ans[k]=i+'0';
-			isUsed[i]=1;
-			if(k==n){//已经有n个转换存储 
-				ans[k+1]='\0';
-				sscanf(ans+1,"%d",&num[len++]);
-			}
-			else
-				paiLie(n,k+1);
-			isUsed[i]=0;//回溯一步 
-		}
-	}
-}
-int halfFind(int l,int r,int n){//二分查找 
-	int mid=l+(r-l)/2;
-	if(num[mid]==n)return mid;
-	else if(l<r&&num[mid]>n)return halfFind(l,mid-1,n);
-	else if(l<r&&num[mid]<n) return halfFind(mid+1,r,n);
-	return -1;
-}
-bool expand(int head,int &tail,int who,int q[][3]){
-	char cur[10];//用于保存当前状态的字符串 
-	int  pos=q[head][1],temp;//当前状态中0的位置
-	sprintf(cur,"%09d",q[head][0]);//int-->char*这里的09d至关重要，否则算不出答案 
-	for(int i=0;i<4;i++){//扩展当前的状态，上下左右四个方向 
-		int swapTo=changeId[pos][i];//将要和那个位置交换 
-		if(swapTo!=-1){//-1则不交换 
-			swap(cur,pos,swapTo);//交换0的位置得到新状态 
-			sscanf(cur,"%d",&temp);//新状态转换为int保存到temp 
-			int k=halfFind(0,len,temp);//没有返回就查找当前排列的位置，将查出来的下标作为isV的下标 
-			if(isV[k][0]==0){//如果 没有出现过，则将这个新状态进队 
-				q[tail][0]=temp,q[tail][1]=swapTo,q[tail][2]=q[head][2]+1;
-				isV[k][0]=who;
-				isV[k][1]=tail;
-				tail++;
-			}
-			else if(isV[k][0]&&isV[k][0]!=who){
-				if(who==1)
-					printf("%d", q[head][2]+que2[isV[k][1]][2]+1);
-				else
-					printf("%d", q[head][2]+que1[isV[k][1]][2]+1);
-				return true;
-			}
-			swap(cur,pos,swapTo);//一个新状态处理完了一定要记得将交换的0交换回来 
-		}
-	}
-	return false;
-}
-void bfs(int n,int p){
-	int head1=0,tail1=1,head2=0,tail2=1;//head队头，tail队尾 
-	que1[head1][0]=n,que1[head1][1]=p,que1[head1][2]=head1;//初始状态保存到对头，并设置当前步数为0 
-	que2[head2][0]=des,que2[head2][1]=4,que2[head2][2]=head2;//初始状态保存到对头，并设置当前步数为0 
-	int k=halfFind(0,len,n);
-	isV[k][0]=1,isV[k][1]=0;
-	k=halfFind(0,len,des);
-	isV[k][0]=2,isV[k][1]=0;
-	while(head1!=tail1||tail2!=head2){//队列不为空则继续搜索 
-		if(tail2-head2>=tail1-head1){//2比1元素多就把1扩展 
-			if(expand(head1,tail1,1,que1))return; 
-			head1++;
-		}
-		else{
-			if(expand(head2,tail2,2,que2))return; 
-			head2++;
-		}
-	}
-}
-int main(){//812340756
-	int n,i=-1,count=0;
-	paiLie(9,1);//先将0-8的全排列按照升序产生出来存入num数组 
-	scanf("%s",start);//输入初始状态 
-	while(start[++i]!='0');//查找初始状态0的位置 
-	sscanf(start,"%d",&n);//字符串转换为整数
-	//int s=clock(); 
-	if(n!=des)//判断输入状态是否就是目的状态 
-		bfs(n,i); 
-	else
-		printf("%d",count);
-	//printf("\n%.6lf",double(clock()-s)/CLOCKS_PER_SEC);
-	return 0;
-}
+/*
+程序名：深度度优先解决8数码问题 
+作者：朱领 
+时间：2020.9.26 
+描述：
+主要函数列表：
+      1.IsGoal（）： 判断是否是目标状态
+	  2.NextStatus（）：下一个可行的状态
+	  3.Cantor（）：康托展开
+	  4.DFS（）：深度优先搜索
+	  5.PrintPath（）：显示遍历的每一个状态
+	  6.freeCloseTable（）：释放close表
+测试用例： 默认写在程序中了不用输入 
+// 初始状态：
+2 8 3
+1 6 4
+7 0 5
 
+//目标状态： 
+1 2 3
+8 0 4
+7 6 5
+
+其它说明：此程序使用深度度优先的算法， 
+          (1): 如果保证可以达到目标节点，可以一直搜索下去，如果不知道能不能，就设置搜索次数 
+		  (2):可以在DFS下继续添加搜索方法 
+*/
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <vector>
+#include <algorithm>
+#include <memory.h>
+
+using namespace std;
+
+// 八数码状态
+typedef struct _Status{
+    int status[3][3];
+    _Status *parent;
+    _Status *next;
+}Status;
+
+
+// 八数码搜索
+class EightPuzzle{
+	private:
+    	unsigned char allHash[362880];
+    	Status root;
+    	Status goal;
+	private:
+    	int nextNumber;
+    	Status next[4];
+	public:
+    	EightPuzzle(Status *root, Status *goal){
+        	memcpy(&this->root.status, &root->status, sizeof(int)*9);
+        	this->root.parent = NULL;
+        	this->root.next = NULL;
+        	memcpy(&this->goal.status, &goal->status, sizeof(int)*9);
+        	this->goal.parent = NULL;
+        	this->goal.next = NULL;
+    	}
+	private:
+    	// 判断是否是目标状态
+    	inline int IsGoal(Status *tmp){
+        	return memcmp(&tmp->status, &goal.status, sizeof(int)*9);
+    	}
+    	// 下一个可行的状态
+    	int NextStatus(Status *tmp){
+        	nextNumber = 0;
+        	int posi, posj;
+        	for(int i = 0; i < 9; i++){
+            	posi = i/3, posj = i - i/3*3;
+            	if(tmp->status[posi][posj] == 0){
+                	break;
+            	}
+        }
+        if(posi-1 >= 0){
+            Status left = *tmp;
+            left.status[posi][posj] = left.status[posi-1][posj];
+            left.status[posi-1][posj] = 0;
+            if(allHash[Cantor(left.status)] == 0){
+                next[nextNumber] = left;
+                next[nextNumber].parent = tmp;
+                nextNumber++;
+            }
+        }
+        if(posi+1 <= 2){
+            Status right = *tmp;
+            right.status[posi][posj] = right.status[posi+1][posj];
+            right.status[posi+1][posj] = 0;
+            if(allHash[Cantor(right.status)] == 0){
+                next[nextNumber] = right;
+                next[nextNumber].parent = tmp;
+                nextNumber++;
+            }
+        }
+        if(posj-1 >= 0){
+            Status up = *tmp;
+            up.status[posi][posj] = up.status[posi][posj-1];
+            up.status[posi][posj-1] = 0;
+            if(allHash[Cantor(up.status)] == 0){
+                next[nextNumber] = up;
+                next[nextNumber].parent = tmp;
+                nextNumber++;
+            }
+        }
+        if(posj+1 <= 2){
+            Status down = *tmp;
+            down.status[posi][posj] = down.status[posi][posj+1];
+            down.status[posi][posj+1] = 0;
+            if(allHash[Cantor(down.status)] == 0){
+                next[nextNumber] = down;
+                next[nextNumber].parent = tmp;
+                nextNumber++;
+            }
+        }
+        return nextNumber;
+    }
+    // 康托展开
+    int Cantor(int arr[][3]){
+        int fac[10] = {1,1,2,6,24,120,720,5040,40320,362880};
+        int index = 0;
+        for(int i = 7; i >= 0; i--){
+            int irow = i/3, icol = i - i/3*3;
+            int count = 0;
+            for(int j = 8; j > i; j--){
+                int jrow = j/3, jcol = j - j/3*3;
+                if(arr[jrow][jcol] < arr[irow][icol]){
+                    count++;
+                }
+            }
+            index += (count*fac[8-i]);
+        }
+        return index;
+    }
+	public:
+    	// 深度优先搜索
+    	int DFS(){
+        	int depth = 0;
+        	int step = 0;
+        	stack<Status> openTable;
+        	Status *closeTable = new Status;;
+        	Status *current = closeTable;
+        	Status *last;
+        	Status *tmp;
+        	openTable.push(root);
+        	while(!openTable.empty()){
+            	tmp = new Status;
+            	*tmp = openTable.top();
+            	openTable.pop();
+            	step++;
+            	current->next = tmp;
+            	current = current->next;
+            	if(IsGoal(tmp) == 0){
+                	PrintPath(tmp);
+                	freeCloseTable(closeTable);
+                	return step;
+            	}
+            	memset(allHash, 0, 362880);
+            	last = tmp;
+            	depth = 0;
+            	while(last != NULL){
+                	allHash[Cantor(last->status)] = 1;
+                	last = last->parent;
+                	depth++;
+            	}
+            	if(depth > 8){
+                	continue;
+            	}
+            	int nextNumber = NextStatus(tmp);
+            	if(nextNumber == 0){
+                	continue;
+            	}
+            	for(int i = 0; i < nextNumber; i++){
+                	openTable.push(next[i]);
+            	}
+        	}
+        	cout << "DFS failed." << endl;
+        	freeCloseTable(closeTable);
+        	return -1;
+    	}
+    
+	private:
+    	// 打印路径
+    	void PrintPath(Status *head){
+        	if(head == NULL){
+            	return;
+        	}
+        	else{
+            	PrintPath(head->parent);
+            	for(int i = 0; i < 3; i++){
+                	for(int j = 0; j < 3; j++){
+                    	cout << head->status[i][j];
+                	}
+                	cout << endl;
+            	}
+            	cout <<endl;
+        	}
+    	}
+    	// 释放close表
+    	void freeCloseTable(Status *closeTable){
+        	Status *current;
+        	while(closeTable != NULL){
+            	current = closeTable->next;
+            	free(closeTable);
+            	closeTable = current;
+        	}
+    	}
+	};
+
+int main()
+{
+    Status init = {2,8,3,1,6,4,7,0,5,0,NULL};
+    Status goal = {1,2,3,8,0,4,7,6,5,0,NULL};
+    EightPuzzle ep = EightPuzzle(&init, &goal);
+    cout << "***********\n" << endl;
+    cout << "DFS********\n" << endl;
+    cout << "step: " << ep.DFS() << endl;
+    cout << "***********\n" << endl;
+    return 0;
+}
 ```
 
 
-**3.启发式搜索**
+
+### 启发式搜索实现8数码
 
   启发式搜索：启发式搜索就是在状态空间中的搜索对每一个搜索的位置进行评估，得到最好的位置，再从这个位置进行搜索直到目标。这样可以省略大量无谓的搜索路径，提高了效率
 
@@ -606,15 +646,15 @@ int main(){//812340756
 
 
 
-![wXe3FJ.png](https://s1.ax1x.com/2020/09/22/wXe3FJ.png)
+![wXe3FJ.png](https://gitee.com/lingisme9/typora/raw/master/img/wXe3FJ.png)
 
 图1.3中右边为最终格局，左边为当前格局，红色字体标识的数码为 正确位置数码，由此可以发现其正确位置的数码个数为4个。那么图1.2中正确数码如下图所示：
 
-![wXeYS1.png](https://s1.ax1x.com/2020/09/22/wXeYS1.png)
+![wXeYS1.png](https://gitee.com/lingisme9/typora/raw/master/img/wXeYS1.png)
 
 由上图所示可得，正确位置数码个数大于等于4的只有左下方的格局，那么下一步选择的就是左下方的格局，再次调用次算法如下图：
 
-![wXeg6P.png](https://s1.ax1x.com/2020/09/22/wXeg6P.png)
+![wXeg6P.png](https://gitee.com/lingisme9/typora/raw/master/img/wXeg6P.png)
 
 
 
@@ -623,204 +663,256 @@ int main(){//812340756
 
  启发函数设定。对于八数码问题，可以利用棋局差距作为一个度量。搜索过程中，差距会逐渐减少，最终为零，为零即搜索完成，得到目标棋局。
 
-
+启发式搜索的算法如下：
+a) 把初始节点放入Open表中，计算其f值；
+b) 如果Open表为空，则问题无解，失败退出；
+c) 把Open表的第一个节点取出放入Close表，并标记该节点为n；
+d) 考察n节点是否为目标节点。如果是，则得到问题的解，成功退出；
+e) 如果节点n不可扩展，则转第b)步；
+f) 扩展节点n，计算每一个子节点的f值，并为每个子节点设置指向节点n的指针，将这些子节点放入Open表中；
+g) 根据各节点的f值，对Open表中给的全部节点按照从小到大的顺序排序；
+h) 转第b)步。
 
 ```
 /*
-程序名：八数码问题
+程序名：A*解决8数码问题 
+作者：朱领 
+时间：2020.9.26
 描述：
 主要函数列表：
-      1.show()     显示当前待调整数码矩阵
-	  2.exchange() 交换数码中的 begin[row_one][column_one] 与 begin[row_two][column_two] 这两个数
-	  3.judge()    判断待调整的数码与最终数码相比正确位置数码的个数
-      4.yidong()   将待调整数码从开始位置移动到终止位置，并将其过程输出
-	  5.shuru()    有用户输入待调整的数码矩阵最初状态的数，并将其存入到begin[][]数组中
-其它说明：此程序运用到启发式搜索的策略，
-          （1）：将空格的地方存储零，这样便于操作
-		  （2）：每次交换0上下左右4个方向元素的位置，当交换位置后正确数码个数 大于或等于 交换前正确数码的个数则算交换成功，
-		         交换成功则重复步骤2，失败的话则跳回上一轮交换。
-		  （3）：当交换到最终所有的数码的位置都正确时结束
+      1.IsGoal（）： 判断是否是目标状态
+	  2.NextStatus（）：下一个可行的状态
+	  3.Cantor（）：康托展开
+	  4.Atart（）：A*搜索 
+	  5.PrintPath（）：显示遍历的每一个状态
+	  6.freeCloseTable（）：释放close表
+	  7.decComparator():A*排序依据
+测试用例： 默认写在程序中了不用输入 
+// 初始状态：
+2 8 3
+1 6 4
+7 0 5
+
+//目标状态： 
+1 2 3
+8 0 4
+7 6 5
+
+其它说明：此程序使用深度度优先的算法， 
+          (1): 如果保证可以达到目标节点，可以一直搜索下去，如果不知道能不能，就设置搜索次数 
+		  (2):可以在DFS下继续添加搜索方法 
+		  (3):继承了深度优先的程序结构，直接加入Astar算法
 */
- 
-#include"stdio.h"
-#define num 3 //宏定义数码的行列数为3
- 
-/*显示当前待调整数码矩阵*/
-void show(int begin[num][num])  
-{
-	for(int i = 0; i < num; i++)
-	{
-		for(int j = 0; j < num; j++)
-			printf("%d ", begin[i][j]);
-		printf("\n");
-	}
-	printf("\n");
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <vector>
+#include <algorithm>
+#include <memory.h>
+
+using namespace std;
+
+// 八数码状态
+typedef struct _Status{
+    int status[3][3];
+    _Status *parent;
+    _Status *next;
+}Status;
+
+// AStar排序依据
+bool decComparator(const Status &s1, const Status &s2){
+    int gn1 = 0, gn2 = 0;
+    int dn1 = 0, dn2 = 0;
+    const Status *ptr1 = &s1;
+    const Status *ptr2 = &s2;
+    int status[3][3] = {1,2,3,8,0,4,7,6,5};
+    while(ptr1 != NULL){
+        gn1 += 1;
+        ptr1 = ptr1->parent;
+    }
+    while(ptr2 != NULL){
+        gn2 += 1;
+        ptr2 = ptr2->parent;
+    }
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            if(s1.status[i][j] != status[i][j]){
+                dn1 += 1;
+            }
+            if(s2.status[i][j] != status[i][j]){
+                dn2 += 1;
+            }
+        }
+    }
+    return (gn1+dn1) > (gn2+dn2);
 }
- 
-/*交换数码中的 begin[row_one][column_one] 与 begin[row_two][column_two] 这两个数*/
-void exchange(int begin[num][num], int row_one, int column_one, int row_two, int column_two)  
-{
-	int temp;
-	temp = begin[row_two][column_two] ;
-	begin[row_two][column_two] = begin[row_one][column_one];
-	begin[row_one][column_one] = temp;
-}
- 
-/*判断待调整的数码与最终数码相比正确位置数码的个数*/
-int judge(int begin[num][num], int end[num][num]) 
-{
-	int count=0;           //count记录数码中正确位置的个数
-	for(int i = 0; i < num; i++)   //检查当前图形的正确度
-		for(int j = 0; j < num; j++)
-		{
-			if(begin[i][j] == end[i][j] && end[i][j] != 0)
-				count++;
-		}
-	return count;           //返回数码中正确位置的个数
-}
- 
-/* 将待调整数码从开始位置移动到终止位置，并将其过程输出*/
-int yidong(int begin[num][num], int end[num][num]
-		   , int right, int jishu, int ji_shu[50][3][3]
-		   , int biaoji, int row, int column) //biaoji存储上一轮移动的反方向代号
-{ 
-	int temp_zhi;
-	show(begin);   //显示数组矩阵
-	if(jishu >= 20)
-		return 0;
-	int node;  //,node为标记
-	int temp;               //存储当前待调整数码正确的个数
-    for(int q=0; q<jishu; q++)  //检查交换后的end[][]图形是否先前已经遍历过了
-	{
-		node = 1;
-		for(int w=0; w<num && node; w++)
-			for(int r=0; r<num && node; r++)
-				if(ji_shu[q][w][r] != begin[w][r])
-					node = 0;
-		if(node == 1)   //如果先前遍历过，返回0
-		{
-	    	return 0;
-		}
-	}
-	for(int i = 0; i < num; i++)   
-		for(int j = 0; j < num; j++)
-			ji_shu[jishu][i][j] = begin[i][j];
-	
-	if(right == num * num - 1)  //如果待调整数码与最终数码完全相同时，返回1
-		return 1;
-	if(row > 0 && biaoji != 0)             //存储0的位置不是在第一行
-	{
-		exchange(begin, row - 1, column, row , column);  //将0与其上面的元素交换存储位置
-		temp = judge(begin, end);
-	    if(temp < right)   //如果交换后正确数码的个数不大于原来正确数码的个数
-	    	exchange(begin, row - 1, column, row , column); //再将其交换回来		
-		else if(temp >= right)          //如果交换后正确数码的个数大于或等于原来正确数码的个数
-		{
-			temp_zhi = yidong(begin, end, temp, jishu+1, ji_shu, 2, row-1, column);
-     		if( temp_zhi == 1)  //进行下一步的移动
-	     	    return 1;
-			exchange(begin, row - 1, column, row , column); //再将其交换回来
-		}
-	}
-	if(column > 0 && biaoji != 1)
-	{
-	   	exchange(begin, row, column - 1, row , column); //将0与其左边的元素交换存储位置
-		temp = judge(begin, end);		
-		if(temp < right)   
-   		   exchange(begin, row, column - 1, row , column);			
-		else if(temp >= right)
-		{
-			temp_zhi = yidong(begin, end, temp, jishu+1, ji_shu ,3, row, column - 1);
-		    if(temp_zhi == 1)  
-                 return 1;
-			exchange(begin, row, column - 1, row , column);
-		}
-	}
- 
-	if(row < num-1 && biaoji != 2)
-	{
-	    exchange(begin, row + 1, column, row , column); //将0与其下面的元素交换存储位置
-		temp = judge(begin, end);	
-		if(temp < right) 
-			exchange(begin, row + 1, column, row , column);
-		else if(temp >= right)
-		{
-			temp_zhi =yidong(begin, end, temp, jishu+1, ji_shu, 0, row+1, column);
-		   if(temp_zhi == 1)  
-		      return 1;
-		   exchange(begin, row + 1, column, row , column);
-		}
-	}
-	if(column < num-1 && biaoji != 3)
-	{
-	    exchange(begin, row, column + 1, row , column); //将0与其右边的元素交换存储位置
-		temp = judge(begin, end);	
-		if(temp < right)   
-		    exchange(begin, row, column + 1, row , column);		
-	    else if(temp >= right)  
-		{
-			temp_zhi = yidong(begin, end, temp, jishu+1, ji_shu, 1, row, column+1);
-			if(temp_zhi == 1)  
-		       return 1;
-			exchange(begin, row, column + 1, row , column);	
-		}
-	}
-	return 0;   //移动失败，返回0
-}
- 
-/*有用户输入待调整的数码矩阵最初状态的数，并将其存入到begin[][]数组中*/
-void shuru(int begin[][num],int blank[])  
-{
-	int temp, node, zero = 0;
-	for (int i = 0; i < num; i++)
-		for(int j = 0; j < num; j++)
-		{
-			node = 1;
-			printf("请输入第%d行，第%d列的元素的值：", i+1, j+1);
-		    scanf("%d", &temp);
-			for (int q = 0; q <= i && node == 1; q++)  //当输入的值有重复的，提示重新输入
-				for (int w = 0; w < j; w++)
-					if(temp == begin[q][w])
-					{
-						printf("输入重复，请重新输入\n");
-						node = 0;
-						j--;
-						break;
-					}
-			if(temp < 0 || temp > num*num-1)   //当输入的值不是在数码的区间范围内时，提示重新输入
-			{
-				printf("请输入从%d到%d的数\n", zero, num*num-1);
-				node = 0;
-			    j--;
-			}
-			if(node == 1)   //如果输入满足条件	
-			{
-				if(temp == 0) //如果输入的值为零，由blank[0]记录行号，blank[1]记录列号
-				{
-					blank[0] = i;
-					blank[1] = j;
-				}
-				begin[i][j] = temp;//将满足条件的值存储起来
-			}
-		}
-}
- 
+
+// 八数码搜索
+class EightPuzzle{
+private:
+    unsigned char allHash[362880];
+    Status root;
+    Status goal;
+private:
+    int nextNumber;
+    Status next[4];
+public:
+    EightPuzzle(Status *root, Status *goal){
+        memcpy(&this->root.status, &root->status, sizeof(int)*9);
+        this->root.parent = NULL;
+        this->root.next = NULL;
+        memcpy(&this->goal.status, &goal->status, sizeof(int)*9);
+        this->goal.parent = NULL;
+        this->goal.next = NULL;
+    }
+private:
+    // 判断是否是目标状态
+    inline int IsGoal(Status *tmp){
+        return memcmp(&tmp->status, &goal.status, sizeof(int)*9);
+    }
+    // 下一个可行的状态
+    int NextStatus(Status *tmp){
+        nextNumber = 0;
+        int posi, posj;
+        for(int i = 0; i < 9; i++){
+            posi = i/3, posj = i - i/3*3;
+            if(tmp->status[posi][posj] == 0){
+                break;
+            }
+        }
+        if(posi-1 >= 0){
+            Status left = *tmp;
+            left.status[posi][posj] = left.status[posi-1][posj];
+            left.status[posi-1][posj] = 0;
+            if(allHash[Cantor(left.status)] == 0){
+                next[nextNumber] = left;
+                next[nextNumber].parent = tmp;
+                nextNumber++;
+            }
+        }
+        if(posi+1 <= 2){
+            Status right = *tmp;
+            right.status[posi][posj] = right.status[posi+1][posj];
+            right.status[posi+1][posj] = 0;
+            if(allHash[Cantor(right.status)] == 0){
+                next[nextNumber] = right;
+                next[nextNumber].parent = tmp;
+                nextNumber++;
+            }
+        }
+        if(posj-1 >= 0){
+            Status up = *tmp;
+            up.status[posi][posj] = up.status[posi][posj-1];
+            up.status[posi][posj-1] = 0;
+            if(allHash[Cantor(up.status)] == 0){
+                next[nextNumber] = up;
+                next[nextNumber].parent = tmp;
+                nextNumber++;
+            }
+        }
+        if(posj+1 <= 2){
+            Status down = *tmp;
+            down.status[posi][posj] = down.status[posi][posj+1];
+            down.status[posi][posj+1] = 0;
+            if(allHash[Cantor(down.status)] == 0){
+                next[nextNumber] = down;
+                next[nextNumber].parent = tmp;
+                nextNumber++;
+            }
+        }
+        return nextNumber;
+    }
+    // 康托展开
+    int Cantor(int arr[][3]){
+        int fac[10] = {1,1,2,6,24,120,720,5040,40320,362880};
+        int index = 0;
+        for(int i = 7; i >= 0; i--){
+            int irow = i/3, icol = i - i/3*3;
+            int count = 0;
+            for(int j = 8; j > i; j--){
+                int jrow = j/3, jcol = j - j/3*3;
+                if(arr[jrow][jcol] < arr[irow][icol]){
+                    count++;
+                }
+            }
+            index += (count*fac[8-i]);
+        }
+        return index;
+    }
+public:
+    // 启发式搜索
+    int AStar(){
+        int step = 0;
+        memset(allHash, 0, 362880);
+        vector<Status> openTable;
+        Status *closeTable = new Status;;
+        Status *current = closeTable;
+        Status *tmp;
+        openTable.push_back(root);
+        allHash[Cantor(root.status)] == 1;
+        while(!openTable.empty()){
+            tmp = new Status;
+            *tmp = openTable[openTable.size()-1];
+            openTable.pop_back();
+            step++;
+            current->next = tmp;
+            current = current->next;
+            if(IsGoal(tmp) == 0){
+                PrintPath(tmp);
+                freeCloseTable(closeTable);
+                return step;
+            }
+            int nextNumber = NextStatus(tmp);
+            if(nextNumber == 0){
+                continue;
+            }
+            for(int i = 0; i < nextNumber; i++){
+                openTable.push_back(next[i]);
+                allHash[Cantor(next[i].status)] == 1;
+            }
+            sort(openTable.begin(), openTable.end(), decComparator);
+        }
+        cout << "AStar failed." << endl;
+        freeCloseTable(closeTable);
+        return -1;
+    }
+private:
+    // 打印路径
+    void PrintPath(Status *head){
+        if(head == NULL){
+            return;
+        }
+        else{
+            PrintPath(head->parent);
+            for(int i = 0; i < 3; i++){
+                for(int j = 0; j < 3; j++){
+                    cout << head->status[i][j];
+                }
+                cout << endl;
+            }
+            cout <<endl;
+        }
+    }
+    // 释放close表
+    void freeCloseTable(Status *closeTable){
+        Status *current;
+        while(closeTable != NULL){
+            current = closeTable->next;
+            free(closeTable);
+            closeTable = current;
+        }
+    }
+};
+
 int main()
 {
-	int jishu = 0, ji_shu[50][3][3];//jishu存储已经遍历过的八数码图形的个数，jishu[][][]存储已经遍历过的八数码图形的形状
-    int row;     //存储数字零的行数
-    int column;  //存储数字零的列数
-	int begin[num][num], blank[2],count=1; 	
-	int end[num][num] = {1, 2, 3, 8, 0, 4, 7, 6, 5};  //给最终状态的数码矩阵赋值
-    printf ("-------%d数码游戏开始！--------\n", num);
-    shuru(begin, blank);   //输入带调整状态的数码矩阵的值
-	row = blank[0];
-	column = blank[1];
-	if(yidong (begin, end,judge(begin,end),jishu,ji_shu,4,row,column) == 0)  
-	   printf("\n此8数码的问题可能无解！");
-	else 
-	   show(begin);
-	getchar();getchar();
-	return 0;
+    Status init = {2,8,3,1,6,4,7,0,5,0,NULL};
+    Status goal = {1,2,3,8,0,4,7,6,5,0,NULL};
+    EightPuzzle ep = EightPuzzle(&init, &goal);
+    cout << "***********\n" << endl;
+    cout << "AStar******\n" << endl;
+    cout << "step: " << ep.AStar() << endl;
+    cout << "***********\n" << endl;
+    return 0;
 }
 ```
